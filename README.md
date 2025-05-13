@@ -10,3 +10,6 @@ It will spit out a file in the right format for the plotter. Copy + Paste that f
 
 My plotter:
 https://github.com/CheeseCube312/CheeseCubes-Filter-Plotter
+
+WebPlotDigitizer:
+https://apps.automeris.io/wpd4/
