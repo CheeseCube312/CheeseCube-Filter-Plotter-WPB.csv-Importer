@@ -22,9 +22,10 @@ def process_csv_file():
         # Prompt for metadata
         filter_number = simpledialog.askstring("Filter Number", "Enter Filter Number:")
         filter_name = simpledialog.askstring("Filter Name", "Enter Filter Name:")
+        manufacturer = simpledialog.askstring("Manufacturer", "Enter Manufacturer:")
         hex_color = simpledialog.askstring("Hex Color", "Enter Hex Color (e.g., #FF0000):")
 
-        if not all([filter_number, filter_name, hex_color]):
+        if not all([filter_number, filter_name, manufacturer, hex_color]):
             messagebox.showerror("Missing Info", "All metadata fields must be filled.")
             return
 
@@ -57,7 +58,8 @@ def process_csv_file():
         output_df = pd.DataFrame(data=[interpolated], columns=new_wavelengths)
         output_df.insert(0, 'Filter Number', filter_number)
         output_df.insert(1, 'Filter Name', filter_name)
-        output_df.insert(2, 'Hex Color', hex_color)
+        output_df.insert(2, 'Manufacturer', manufacturer)
+        output_df.insert(3, 'Hex Color', hex_color)
 
         out_path = os.path.splitext(file_path)[0] + "_interpolated.tsv"
         output_df.to_csv(out_path, sep='\t', index=False)
