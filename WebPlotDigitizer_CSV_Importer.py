@@ -1,3 +1,4 @@
+
 import tkinter as tk
 from tkinter import filedialog, simpledialog, messagebox
 import pandas as pd
@@ -25,9 +26,14 @@ def process_csv_file():
         manufacturer = simpledialog.askstring("Manufacturer", "Enter Manufacturer:")
         hex_color = simpledialog.askstring("Hex Color", "Enter Hex Color (e.g., #FF0000):")
 
+        # Normalize hex color input
+        if hex_color and not hex_color.startswith('#'):
+            hex_color = '#' + hex_color
+
         if not all([filter_number, filter_name, manufacturer, hex_color]):
             messagebox.showerror("Missing Info", "All metadata fields must be filled.")
             return
+
 
         # Read CSV with semicolon separator, comma as decimal
         raw_data = pd.read_csv(file_path, sep=';', header=None, engine='python')
@@ -61,7 +67,9 @@ def process_csv_file():
         output_df.insert(2, 'Manufacturer', manufacturer)
         output_df.insert(3, 'Hex Color', hex_color)
 
-        out_path = os.path.splitext(file_path)[0] + "_interpolated.tsv"
+        # Construct output filename from metadata
+        sanitized_name = ''.join(c for c in f"{manufacturer}{filter_number}{filter_name}" if c.isalnum())
+        out_path = os.path.join(os.path.dirname(file_path), sanitized_name + ".tsv")
         output_df.to_csv(out_path, sep='\t', index=False)
 
         messagebox.showinfo("Success", f"Interpolated TSV saved to:\n{out_path}")
